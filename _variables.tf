@@ -37,3 +37,20 @@ variable "infrastructure_role_name" {
   type        = string
   default     = "InfrastructureDeployer"
 }
+
+variable "rotation_lambda_arn" {
+  description = "The ARN of the Lambda function that rotates the secret (enables rotation when provided)"
+  type        = string
+  default     = null
+}
+
+variable "rotation_days" {
+  description = "The number of days between automatic scheduled rotations"
+  type        = number
+  default     = 30
+
+  validation {
+    condition     = var.rotation_days >= 1 && var.rotation_days <= 365
+    error_message = "rotation_days must be between 1 and 365."
+  }
+}

@@ -54,3 +54,14 @@ resource "aws_secretsmanager_secret_policy" "this" {
   secret_arn = aws_secretsmanager_secret.this.arn
   policy     = data.aws_iam_policy_document.this.json
 }
+
+resource "aws_secretsmanager_secret_rotation" "this" {
+  count = var.rotation_lambda_arn != null ? 1 : 0
+
+  secret_id           = aws_secretsmanager_secret.this.id
+  rotation_lambda_arn = var.rotation_lambda_arn
+
+  rotation_rules {
+    automatically_after_days = var.rotation_days
+  }
+}

@@ -53,6 +53,19 @@ module "my_secret" {
 }
 ```
 
+### With automatic rotation
+
+```hcl
+module "my_secret" {
+  source = "git::https://github.com/im5tu/opentofu-aws-secrets-manager.git?ref=<commit sha>"
+
+  name                = "my-application/db-credentials"
+  description         = "Database credentials with automatic rotation"
+  rotation_lambda_arn = aws_lambda_function.rotate_secret.arn
+  rotation_days       = 30
+}
+```
+
 ## Requirements
 
 | Name | Version |
@@ -70,6 +83,8 @@ module "my_secret" {
 | policy | The policy to apply in addition to the management policy | `string` | `null` | no |
 | kms_key_id | The KMS key to secure the secrets (uses AWS managed key if not provided) | `string` | `null` | no |
 | infrastructure_role_name | The name of the IAM role that can manage secrets | `string` | `"InfrastructureDeployer"` | no |
+| rotation_lambda_arn | The ARN of the Lambda that rotates the secret (enables rotation when provided) | `string` | `null` | no |
+| rotation_days | The number of days between automatic scheduled rotations (1-365) | `number` | `30` | no |
 
 ## Outputs
 
