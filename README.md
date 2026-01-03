@@ -1,16 +1,55 @@
-# OpenTofu AWS Module Template
+# OpenTofu AWS Secrets Manager
 
-Template repository for creating OpenTofu AWS modules.
+OpenTofu module for creating AWS Secrets Manager secrets with configurable resource policies.
 
 ## Usage
 
 ```hcl
-module "example" {
-  source = "git::https://github.com/im5tu/opentofu-aws-<name>.git?ref=main"
+module "my_secret" {
+  source = "git::https://github.com/im5tu/opentofu-aws-secrets-manager.git?ref=main"
 
-  tags = {
-    Environment = "production"
+  name        = "my-application/api-key"
+  description = "API key for my application"
+}
+```
+
+### With custom policy
+
+```hcl
+data "aws_iam_policy_document" "read_access" {
+  statement {
+    sid    = "AllowLambdaRead"
+    effect = "Allow"
+    actions = [
+      "secretsmanager:GetSecretValue"
+    ]
+    resources = ["*"]
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::123456789012:role/MyLambdaRole"]
+    }
   }
+}
+
+module "my_secret" {
+  source = "git::https://github.com/im5tu/opentofu-aws-secrets-manager.git?ref=main"
+
+  name        = "my-application/api-key"
+  description = "API key for my application"
+  policy      = data.aws_iam_policy_document.read_access.json
+}
+```
+
+### With custom KMS key and role name
+
+```hcl
+module "my_secret" {
+  source = "git::https://github.com/im5tu/opentofu-aws-secrets-manager.git?ref=main"
+
+  name                     = "my-application/api-key"
+  description              = "API key for my application"
+  kms_key_id               = aws_kms_key.secrets.arn
+  infrastructure_role_name = "MyDeployerRole"
 }
 ```
 
@@ -25,12 +64,19 @@ module "example" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| tags | Tags to apply to resources | `map(string)` | `{}` | no |
+| name | The name of the secret | `string` | n/a | yes |
+| description | The description of the secret to show inside of AWS console | `string` | `""` | no |
+| recovery_window_in_days | The window before the secret is deleted (7-30 days) | `number` | `7` | no |
+| policy | The policy to apply in addition to the management policy | `string` | `null` | no |
+| kms_key_id | The KMS key to secure the secrets (uses AWS managed key if not provided) | `string` | `null` | no |
+| infrastructure_role_name | The name of the IAM role that can manage secrets | `string` | `"InfrastructureDeployer"` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
+| name | The name of the secret |
+| arn | The ARN of the secret |
 
 ## Development
 

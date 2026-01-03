@@ -33,7 +33,7 @@ data "aws_iam_policy_document" "management" {
     principals {
       identifiers = [
         "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root",
-        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/InfrastructureDeployer"
+        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${var.infrastructure_role_name}"
       ]
       type = "AWS"
     }

@@ -23,10 +23,17 @@ variable "recovery_window_in_days" {
 variable "policy" {
   description = "The policy to apply in addition to the management of the secrets which is done by this module"
   type        = string
+  default     = null
 }
 
 variable "kms_key_id" {
   description = "The Key to secure the secrets (optional - uses AWS managed key if not provided)"
   type        = string
   default     = null
+}
+
+variable "infrastructure_role_name" {
+  description = "The name of the IAM role that can manage secrets (used in resource policy)"
+  type        = string
+  default     = "InfrastructureDeployer"
 }
