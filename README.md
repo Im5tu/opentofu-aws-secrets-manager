@@ -6,7 +6,7 @@ OpenTofu module for creating AWS Secrets Manager secrets with configurable resou
 
 ```hcl
 module "my_secret" {
-  source = "git::https://github.com/im5tu/opentofu-aws-secrets-manager.git?ref=<commit sha>"
+  source = "git::https://github.com/im5tu/opentofu-aws-secrets-manager.git?ref=24d7d2678af5ec3d1fcd03f715c8992c412a2ff6"
 
   name        = "my-application/api-key"
   description = "API key for my application"
@@ -32,7 +32,7 @@ data "aws_iam_policy_document" "read_access" {
 }
 
 module "my_secret" {
-  source = "git::https://github.com/im5tu/opentofu-aws-secrets-manager.git?ref=<commit sha>"
+  source = "git::https://github.com/im5tu/opentofu-aws-secrets-manager.git?ref=24d7d2678af5ec3d1fcd03f715c8992c412a2ff6"
 
   name        = "my-application/api-key"
   description = "API key for my application"
@@ -44,7 +44,7 @@ module "my_secret" {
 
 ```hcl
 module "my_secret" {
-  source = "git::https://github.com/im5tu/opentofu-aws-secrets-manager.git?ref=<commit sha>"
+  source = "git::https://github.com/im5tu/opentofu-aws-secrets-manager.git?ref=24d7d2678af5ec3d1fcd03f715c8992c412a2ff6"
 
   name                     = "my-application/api-key"
   description              = "API key for my application"
@@ -57,7 +57,7 @@ module "my_secret" {
 
 ```hcl
 module "my_secret" {
-  source = "git::https://github.com/im5tu/opentofu-aws-secrets-manager.git?ref=<commit sha>"
+  source = "git::https://github.com/im5tu/opentofu-aws-secrets-manager.git?ref=24d7d2678af5ec3d1fcd03f715c8992c412a2ff6"
 
   name                = "my-application/db-credentials"
   description         = "Database credentials with automatic rotation"
